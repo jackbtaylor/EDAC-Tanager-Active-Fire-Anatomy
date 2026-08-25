@@ -4,7 +4,10 @@ This module contains accessory functions used in the TOA smoke mask and SR burn 
 import h5py
 import rasterio
 import re
+import tqdm
 import numpy as np
+import pandas as pd
+from numpy.lib.stride_tricks import sliding_window_view
 from affine import Affine
 
 
@@ -16,6 +19,10 @@ def build_resampled_library(library_root, class_dirs, target_wavelengths, target
       library        : (n_bands, n_spectra) array for MesmaCore
       class_list     : (n_spectra,) array of class-name strings
       spectrum_names : (n_spectra,) array of source file stems
+
+    Returns
+    ----
+    spectral library ready for MESMA, group class names, and source spectrum names
     """
 
     def _gaussian_response_resample(ref_wavelengths, ref_reflectance, target_wavelengths, target_fwhm, oversample_step=1.0):
@@ -82,10 +89,39 @@ def build_resampled_library(library_root, class_dirs, target_wavelengths, target
     return library, np.array(class_list), np.array(spectrum_names)
 
 
+def generate_new_background(back, window_size=(3, 3), n_bands=None): # function to generate new background
+    H, W = back.shape[:2] # pull out the height and width from the shape
+    if n_bands is None: # calculate the number of bands 
+        n_bands = back.shape[2]
+
+    wh, ww = window_size # assign window variables 
+    pad_h, pad_w = wh // 2, ww // 2 # pad variables  by half their value rounded down
+    rng = np.random.default_rng() # random number generator 
+
+    new_bands = [] # make empty list 
+    for b in tqdm.tqdm(range(n_bands)): # cycle through the bands, tqdm gives a progress bar
+        band = back[:, :, b] # select individual band
+
+        # pad so the sliding-window output matches the original H, W
+        padded = np.pad(band, ((pad_h, pad_h), (pad_w, pad_w)), mode='reflect') 
+        window = sliding_window_view(padded, window_shape=window_size)  # (H, W, wh, ww) make the sliding window
+        out_h, out_w = window.shape[:2] # create the out height and width
+
+        flat = window.reshape(out_h, out_w, wh * ww) # make the window flat in the last dimesion (i.e. band)
+        idx = rng.integers(0, wh * ww, size=(out_h, out_w)) # make random values in the range of the flattened band
+        moving_sample = np.take_along_axis(flat, idx[..., None], axis=-1)[..., 0]  # randomly select a value from the background values in the flattened array
+
+        new_bands.append(moving_sample) # build array 
+
+    return np.stack(new_bands, axis=-1) # return the new array 
+
 
 def georeference_h5(img, northern=True):
     """
-    Build georeferencing info (transform, CRS, extent) for a Tanager HDFEOS-gridded HDF5 product. 
+    Build georeferencing info (transform, CRS, extent) for a Tanager HDFEOS-gridded HDF5 product.
+
+    img         : an open hdf file using h5py and with
+    northern    : is the image in the northern hemisphere (for projection codes)
 
     Returns
     -------
@@ -131,3 +167,10 @@ def georeference_h5(img, northern=True):
         "xmin": info["ul_x"], "xmax": info["lr_x"],
         "ymin": info["lr_y"], "ymax": info["ul_y"],
     }
+
+
+def print_structure(name, obj):
+    """Callback function to print the name and type of each object."""
+    indent = "  " * name.count('/')
+    obj_type = "Group" if isinstance(obj, h5py.Group) else "Dataset"
+    print(f"{indent}{name} ({obj_type})")
