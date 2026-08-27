@@ -26,7 +26,7 @@ The Monroe Canyon Fire began on July 13th, 2025 from unknown causes. It ignited 
 The Tanager collection used for this workflow is available for free as a sample in the [Tanager Core Imagery Catalog](https://www.planet.com/data/stac/browser/tanager-core-imagery/fire/20250724_190927_83_4001/20250724_190927_83_4001.json). 
 
 ## Case Study Analysis:
-This repository contains the tools necessary to gain a better understanding of the active fire behavior and the affected landscape surrounding the Monroe Canyon Fire on the July 24th, 2025.
+This repository contains the tools necessary to gain a better understanding of the active fire behavior and the affected landscape surrounding the Monroe Canyon Fire on July 24th, 2025.
 
 ### Contents:
 * 1_toa_plume_detection.ipynb
