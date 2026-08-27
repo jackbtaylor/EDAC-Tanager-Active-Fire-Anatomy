@@ -1,9 +1,9 @@
 # Anatomy of an Active Fire 🔥
-A submission for Planet's *Tanager Open Data Competition* from the University of New Mexico's Earth Data Analysis Center ([EDAC](https://edac.unm.edu/)) Team 
+A submission for Planet's *Tanager Open Data Competition* from the University of New Mexico's [Earth Data Analysis Center](https://edac.unm.edu/) Team 
 
 **Lisa Sinclair** (Remote Sensing Scientist, Project Lead)<br> **Jack Taylor** (Programmer-Analyst, Author - burn severity analysis)<br> **Chris Girlamo** (Systems Administrator, Author - plume detection)
 
-Contact: Lisa Sinclair, llsinclair@unm.edu
+Contact: [Lisa Sinclair](mailto:llsinclair@unm.edu)
 
 ## Introduction
 Active fire scenes present a complex spectral target for remote sensing. A single acquisition captures a smoke- and gas-laden atmosphere, fire-emitted radiance, and a highly heterogeneous surface. At fine spatial scales, flame, char, exposed soil, scorched vegetation, and unburned patches can occur within meters of one another. Conventional multispectral sensors represent that complexity with a limited number of broad spectral bands, and reduce it, in practice, to a single burn severity index. However, Tanager-1's 426 contiguous narrow bands spanning the visible through 2500 nm SWIR carry enough spectral detail to pull those unique atmospheric and surface components apart at fine spectral and spatial scales, all from a single acquisition.
