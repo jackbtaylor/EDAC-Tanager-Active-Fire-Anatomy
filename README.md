@@ -1,7 +1,7 @@
 # Anatomy of an Active Fire 🔥
 A submission for Planet's *Tanager Open Data Competition* from the University of New Mexico's [Earth Data Analysis Center](https://edac.unm.edu/) Team 
 
-**Lisa Sinclair** (Remote Sensing Scientist, Project Lead)<br> **Jack Taylor** (Programmer-Analyst, Author - burn severity analysis)<br> **Chris Girlamo** (Systems Administrator, Author - plume detection)
+**Lisa Sinclair** (Remote Sensing Research Scientist, Project Lead)<br> **Jack Taylor** (Programmer-Analyst, Author - burn severity analysis)<br> **Chris Girlamo** (Systems Administrator, Author - plume detection)
 
 Contact: [Lisa Sinclair](mailto:llsinclair@unm.edu)
 
